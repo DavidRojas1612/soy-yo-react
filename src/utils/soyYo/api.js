@@ -1,4 +1,4 @@
-import { EnrollmentSDK } from '@soyyo/sdk_web_enrollment'
+import {EnrollmentSDK} from '@soyyo/sdk_web_enrollment'
 
 const environments = {
   API_COGNITO: 'https://soyyo-snb.auth.us-east-1.amazoncognito.com',
@@ -18,10 +18,10 @@ class BasicRegistryComponent {
 
   constructor() {
     // Carga de información para captura de biometría.
-    EnrollmentSDK.preInitialize()
-    this.enrollment = new EnrollmentSDK(environments, (err) => {
+    this.enrollment = new EnrollmentSDK(environments, err => {
       console.log('err', err)
     })
+    EnrollmentSDK.preInitialize()
     // this.enrollment.initCaptureDocument()
   }
 
@@ -59,7 +59,7 @@ class BasicRegistryComponent {
 
   captureFace() {
     this.enrollment.captureFace(
-      (response) => {
+      response => {
         switch (response.liveness.code) {
           case 'EP006':
             //Se requiere validación de documento
@@ -69,7 +69,7 @@ class BasicRegistryComponent {
             break
         }
       },
-      (error) => {}
+      error => {},
     )
   }
 }
