@@ -67,6 +67,8 @@ class BasicRegistryComponent {
           case 'EP004':
             //Llamada a activación del usuario o a validación del documento si así se requiere
             break
+          default:
+            break
         }
       },
       error => {},
