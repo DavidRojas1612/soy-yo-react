@@ -24,7 +24,7 @@ module.exports = {
         {
           context: './node_modules/@identy/identy-face/dist/assets/',
           from: `**/*`,
-          to: './assets',
+          to: './static/js/assets',
         },
         {
           context: './node_modules/@identy/identy-common/dist/assets/',

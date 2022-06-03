@@ -4,15 +4,16 @@ import './App.css'
 import {soyYoApi} from './utils/'
 
 function App() {
+  const onceRun = React.useRef(false)
   const startConfig = async () => {
     const form = {
       entityId: '28',
       processType: 'ENR',
       documentType: 'CC',
-      identificationNumber: '1152461322',
+      identificationNumber: '1152461323',
       phoneIndicative: '57',
-      phoneNumber: '3023297768',
-      email: 'david.elnrego@yopmail.com',
+      phoneNumber: '3023297769',
+      email: 'david.elnrego+1@yopmail.com',
       appIdentifier: 'pocwompinuxt.vercel.app',
       channel: 'WEB_CLIENT',
     }
@@ -20,9 +21,11 @@ function App() {
   }
 
   React.useEffect(() => {
-    console.log('props', soyYoApi)
-
-    startConfig()
+    if (!onceRun.current) {
+      console.log('props', soyYoApi)
+      startConfig()
+      onceRun.current = true
+    }
   }, [])
 
   return (

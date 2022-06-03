@@ -23,9 +23,9 @@
     "experimentalDecorators": true,
     "importHelpers": true,
 
-    "outDir": "./dist",
     "sourceMap": false,
+    "outDir": "./dist",
     "typeRoots": ["node_modules/@types"]
   },
-  "include": ["src"]
+  "include": ["src", "public/assets"]
 }
