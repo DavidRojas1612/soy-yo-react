@@ -21,7 +21,7 @@ class BasicRegistryComponent {
     this.enrollment = new EnrollmentSDK(environments, err => {
       console.log('err', err)
     })
-    // this.enrollment.initCaptureDocument()
+    this.enrollment.initCaptureDocument()
   }
 
   async onSubmit(data) {
@@ -32,11 +32,10 @@ class BasicRegistryComponent {
       if (!response) {
         throw new Error('Error el servidor no pudo procesar los datos basicos')
       }
-      console.log('response', response)
       this.captureFace()
     } catch (error) {
       //Manejo de mensajes de error
-      console.log('AAAMAAA', error)
+      console.log(error)
     }
   }
 
@@ -50,6 +49,7 @@ class BasicRegistryComponent {
             break
           case 'EP004':
             //Llamada a activación del usuario o a validación del documento si así se requiere
+            this.activatedUser(response.liveness.data.processId)
             break
           default:
             break
@@ -64,11 +64,43 @@ class BasicRegistryComponent {
       res => {
         //Llamada a activación del usuario
         console.log('res docs', res)
+        // this.activatedUser(res)
       },
       error => {
         console.log('erros docs', error)
       },
     )
+  }
+
+  async activatedUser(processId) {
+    const response = await fetch(
+      'https://soyyo-snb.auth.us-east-1.amazoncognito.com/oauth2/token?client_id=4prar45fh00jpiu2mt0jcu6m99&client_secret=5uti50q4gr3g8bic4r75cidhvok8583e2cmvt9lk5vgn30gsp4q&grant_type=client_credentials',
+      {
+        method: 'POST', // or 'PUT'
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'x-api-key': 'PBxc0p3bsb4E2gqSzx29oDwaBgQPFM377ASwIBic',
+        },
+      },
+    )
+
+    const data = await response.json()
+    console.log('data', data)
+
+    const responseActivation = await fetch(
+      `https://api.soyyo.mobi/snb-enrollment-process/enrollment-process/v1.0/WEB_CLIENT/${processId}`,
+      {
+        method: 'POST', // or 'PUT'
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': 'PBxc0p3bsb4E2gqSzx29oDwaBgQPFM377ASwIBic',
+          Authorization: `Bearer ${data.access_token}`,
+        },
+      },
+    )
+
+    const dataActivation = await responseActivation.json()
+    console.log('dataActivation', dataActivation)
   }
 }
 

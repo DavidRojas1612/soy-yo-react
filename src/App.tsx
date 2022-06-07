@@ -1,50 +1,102 @@
 import React from 'react'
-import logo from './logo.svg'
 import './App.css'
 import {soyYoApi} from './utils/'
+import {
+  Container,
+  Heading,
+  FormControl,
+  FormLabel,
+  Input,
+  Checkbox,
+  Button,
+} from '@chakra-ui/react'
 
 function App() {
-  const onceRun = React.useRef(false)
-  const startConfig = async () => {
+  const [isLegal, setIsLegal] = React.useState(false)
+
+  const startConfig = async (form: any) => {
+    await soyYoApi.onSubmit(form)
+  }
+
+  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    const formData = new FormData(event.currentTarget)
+    const fieldValues = Object.fromEntries(formData.entries())
+    const {identificationNumber, phoneNumber, email} = fieldValues
     const form = {
       entityId: '28',
       processType: 'ENR',
       documentType: 'CC',
-      identificationNumber: '1152461323',
       phoneIndicative: '57',
-      phoneNumber: '3023297769',
-      email: 'david.elnrego+1@yopmail.com',
       appIdentifier: 'pocwompinuxt.vercel.app',
       channel: 'WEB_CLIENT',
+      identificationNumber,
+      phoneNumber,
+      email,
     }
-    await soyYoApi.onSubmit(form)
+
+    startConfig(form)
   }
 
-  React.useEffect(() => {
-    if (!onceRun.current) {
-      console.log('props', soyYoApi)
-      startConfig()
-      onceRun.current = true
-    }
-  }, [])
-
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container maxW="xl" p={12}>
+      <Heading mb={8}>Datos Basicos</Heading>
+      <form noValidate onSubmit={onSubmit}>
+        <FormControl mb={6} isRequired>
+          <FormLabel htmlFor="firstName">Nombre</FormLabel>
+          <Input id="firstName" name="firstName" placeholder="Nombre" />
+        </FormControl>
+        <FormControl mb={6} isRequired>
+          <FormLabel htmlFor="lastName">Apellido</FormLabel>
+          <Input id="lastName" name="lastName" placeholder="Apellido" />
+        </FormControl>
+        <FormControl mb={6} isRequired>
+          <FormLabel htmlFor="identificationNumber">
+            Numero de identificación
+          </FormLabel>
+          <Input
+            id="identificationNumber"
+            name="identificationNumber"
+            placeholder="Numero de identificación"
+          />
+        </FormControl>
+        <FormControl mb={6} isRequired>
+          <FormLabel htmlFor="phoneNumber">Numero de telefono</FormLabel>
+          <Input
+            id="phoneNumber"
+            name="phoneNumber"
+            placeholder="Numero de telefono"
+            type="tel"
+          />
+        </FormControl>
+        <FormControl mb={6} isRequired>
+          <FormLabel htmlFor="email">Email</FormLabel>
+          <Input
+            id="email"
+            name="email"
+            placeholder="Numero de telefono"
+            type="email"
+          />
+        </FormControl>
+        <FormControl mb={6} as="fieldset">
+          <FormLabel as="legend">Representante legal?</FormLabel>
+          <Checkbox
+            size="sm"
+            colorScheme="red"
+            onChange={e => setIsLegal(e.target.checked)}
+          >
+            Represetante legal
+          </Checkbox>
+        </FormControl>
+        {isLegal ? (
+          <FormControl mb={6} isRequired>
+            <FormLabel htmlFor="nit">Nit</FormLabel>
+            <Input id="nit" name="nit" placeholder="Nit" />
+          </FormControl>
+        ) : null}
+        <Button type="submit">Registrarse y continuar</Button>
+      </form>
+    </Container>
   )
 }
 
