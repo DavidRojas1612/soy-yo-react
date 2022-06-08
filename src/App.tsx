@@ -30,9 +30,9 @@ function App() {
       phoneIndicative: '57',
       appIdentifier: 'pocwompinuxt.vercel.app',
       channel: 'WEB_CLIENT',
-      identificationNumber,
-      phoneNumber,
-      email,
+      identificationNumber: '1152461322',
+      phoneNumber: '3023297768',
+      email: 'david.elnrego@gmail.com',
     }
 
     startConfig(form)
@@ -42,15 +42,15 @@ function App() {
     <Container maxW="xl" p={12}>
       <Heading mb={8}>Datos Basicos</Heading>
       <form noValidate onSubmit={onSubmit}>
-        <FormControl mb={6} isRequired>
+        <FormControl mb={6}>
           <FormLabel htmlFor="firstName">Nombre</FormLabel>
           <Input id="firstName" name="firstName" placeholder="Nombre" />
         </FormControl>
-        <FormControl mb={6} isRequired>
+        <FormControl mb={6}>
           <FormLabel htmlFor="lastName">Apellido</FormLabel>
           <Input id="lastName" name="lastName" placeholder="Apellido" />
         </FormControl>
-        <FormControl mb={6} isRequired>
+        <FormControl mb={6}>
           <FormLabel htmlFor="identificationNumber">
             Numero de identificación
           </FormLabel>
@@ -60,7 +60,7 @@ function App() {
             placeholder="Numero de identificación"
           />
         </FormControl>
-        <FormControl mb={6} isRequired>
+        <FormControl mb={6}>
           <FormLabel htmlFor="phoneNumber">Numero de telefono</FormLabel>
           <Input
             id="phoneNumber"
@@ -69,7 +69,7 @@ function App() {
             type="tel"
           />
         </FormControl>
-        <FormControl mb={6} isRequired>
+        <FormControl mb={6}>
           <FormLabel htmlFor="email">Email</FormLabel>
           <Input
             id="email"
@@ -89,7 +89,7 @@ function App() {
           </Checkbox>
         </FormControl>
         {isLegal ? (
-          <FormControl mb={6} isRequired>
+          <FormControl mb={6}>
             <FormLabel htmlFor="nit">Nit</FormLabel>
             <Input id="nit" name="nit" placeholder="Nit" />
           </FormControl>

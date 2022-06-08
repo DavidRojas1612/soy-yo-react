@@ -14,7 +14,7 @@ const environments = {
 
 class BasicRegistryComponent {
   enrollment
-
+  processId
   constructor() {
     EnrollmentSDK.preInitialize()
     // Carga de información para captura de biometría.
@@ -45,6 +45,7 @@ class BasicRegistryComponent {
         switch (response.liveness.code) {
           case 'EP006':
             //Se requiere validación de documento
+            this.processId = response.liveness.data.processId
             this.documentValidate()
             break
           case 'EP004':
@@ -64,7 +65,7 @@ class BasicRegistryComponent {
       res => {
         //Llamada a activación del usuario
         console.log('res docs', res)
-        // this.activatedUser(res)
+        this.activatedUser(this.processId)
       },
       error => {
         console.log('erros docs', error)
