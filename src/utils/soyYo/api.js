@@ -89,7 +89,7 @@ class BasicRegistryComponent {
     console.log('data', data)
 
     const responseActivation = await fetch(
-      `https://api.soyyo.mobi/snb-enrollment-process/enrollment-process/v1.0/WEB_CLIENT/${processId}`,
+      `https://api.soyyo.mobi/snb-enrollment-process/enrollment-process/v1.0/userActivation/WEB_CLIENT/${processId}`,
       {
         method: 'POST', // or 'PUT'
         headers: {
