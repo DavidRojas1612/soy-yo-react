@@ -30,9 +30,9 @@ function App() {
       phoneIndicative: '57',
       appIdentifier: 'pocwompinuxt.vercel.app',
       channel: 'WEB_CLIENT',
-      identificationNumber: '1152461322',
-      phoneNumber: '3023297768',
-      email: 'david.elnrego@gmail.com',
+      identificationNumber,
+      phoneNumber,
+      email,
     }
 
     startConfig(form)
