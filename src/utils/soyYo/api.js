@@ -103,7 +103,7 @@ class BasicRegistryComponent {
     const responseActivation = await fetch(
       `https://api.soyyo.mobi/snb-enrollment-process/enrollment-process/v1.0/userActivation/WEB_CLIENT/${processId}`,
       {
-        method: 'POST', // or 'PUT'
+        method: 'PUT', // or 'PUT'
         headers: {
           'Content-Type': 'application/json',
           'x-api-key': 'PBxc0p3bsb4E2gqSzx29oDwaBgQPFM377ASwIBic',
