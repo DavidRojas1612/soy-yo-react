@@ -1,4 +1,6 @@
 import {EnrollmentSDK} from '@soyyo/sdk_web_enrollment'
+import {toast} from '../toas'
+
 const environments = {
   API_COGNITO: 'https://soyyo-snb.auth.us-east-1.amazoncognito.com',
   API_REGISTRY:
@@ -35,6 +37,13 @@ class BasicRegistryComponent {
       if (!response) {
         throw new Error('Error el servidor no pudo procesar los datos basicos')
       }
+      toast({
+        title: 'Response Basic Data',
+        description: JSON.stringify(response, null, 2),
+        status: 'success',
+        duration: 9000,
+        isClosable: true,
+      })
       this.captureFace()
     } catch (error) {
       if (error.code== "EP002" ) {
@@ -48,12 +57,26 @@ class BasicRegistryComponent {
       }
       //Manejo de mensajes de error
       console.log(error)
+      toast({
+        title: 'Error Basic Data',
+        description: JSON.stringify(error, null, 2),
+        status: 'error',
+        duration: 9000,
+        isClosable: true,
+      })
     }
   }
 
   captureFace() {
     this.enrollment.captureFace(
       response => {
+        toast({
+          title: 'Response FaceCapture',
+          description: JSON.stringify(response, null, 2),
+          status: 'success',
+          duration: 9000,
+          isClosable: true,
+        })
         switch (response.liveness.code) {
           case 'EP006':
             //Se requiere validación de documento
@@ -68,7 +91,15 @@ class BasicRegistryComponent {
             break
         }
       },
-      error => {},
+      error => {
+        toast({
+          title: 'Error CaptureFace.',
+          description: JSON.stringify(error, null, 2),
+          status: 'error',
+          duration: 9000,
+          isClosable: true,
+        })
+      },
     )
   }
 
@@ -78,9 +109,23 @@ class BasicRegistryComponent {
         //Llamada a activación del usuario
         console.log('res docs', res)
         this.activatedUser(this.processId)
+        toast({
+          title: 'Response document',
+          description: JSON.stringify(res, null, 2),
+          status: 'success',
+          duration: 9000,
+          isClosable: true,
+        })
       },
       error => {
         console.log('erros docs', error)
+        toast({
+          title: 'Error Validación de documentos',
+          description: JSON.stringify(error, null, 2),
+          status: 'error',
+          duration: 9000,
+          isClosable: true,
+        })
       },
     )
   }
@@ -113,6 +158,13 @@ class BasicRegistryComponent {
     )
 
     const dataActivation = await responseActivation.json()
+    toast({
+      title: 'Response Activated',
+      description: JSON.stringify(dataActivation, null, 2),
+      status: 'success',
+      duration: 9000,
+      isClosable: true,
+    })
     console.log('dataActivation', dataActivation)
   }
 
