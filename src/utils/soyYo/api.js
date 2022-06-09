@@ -29,11 +29,10 @@ class BasicRegistryComponent {
   async onSubmit(data) {
     // Capturar parámetros y almacenarlos en "data" según parámetros de entrada indicados
     try {
-
       this.validateUser(data.identificationNumber)
       // Llamada a método para registro de datos basicos basicDataRegister
       const response = await this.enrollment.basicDataRegister(data)
-      console.log( response );
+      console.log(response)
       if (!response) {
         throw new Error('Error el servidor no pudo procesar los datos basicos')
       }
@@ -46,14 +45,15 @@ class BasicRegistryComponent {
       })
       this.captureFace()
     } catch (error) {
-      if (error.code== "EP002" ) {
+      if (error.code == 'EP002') {
         console.log('err', 'El usuario ya se encuentra registrado')
-      }
-      else if( error.code == "EP003" ){
+      } else if (error.code == 'EP003') {
         console.log('err', 'Operacion no exitosa')
-      }
-      else{
-        console.log('err', 'Error el servidor no pudo procesar los datos básicos')
+      } else {
+        console.log(
+          'err',
+          'Error el servidor no pudo procesar los datos básicos',
+        )
       }
       //Manejo de mensajes de error
       console.log(error)
@@ -192,15 +192,23 @@ class BasicRegistryComponent {
           'x-api-key': 'PBxc0p3bsb4E2gqSzx29oDwaBgQPFM377ASwIBic',
           Authorization: `Bearer ${data.access_token}`,
         },
-        body: JSON.stringify({documentType: 'CC', identificationNumber: identificationNumber}),
+        body: JSON.stringify({
+          documentType: 'CC',
+          identificationNumber: identificationNumber,
+        }),
       },
     )
 
     const datavalidateUser = await responseUserValidate.json()
-    console.log('datavalidateUser', dataActivation)
+    console.log('datavalidateUser', datavalidateUser)
+    toast({
+      title: 'Validate user.',
+      description: JSON.stringify(datavalidateUser, null, 2),
+      status: 'info',
+      duration: 9000,
+      isClosable: true,
+    })
   }
 }
-
-
 
 export default BasicRegistryComponent
