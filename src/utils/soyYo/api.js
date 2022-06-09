@@ -27,13 +27,25 @@ class BasicRegistryComponent {
   async onSubmit(data) {
     // Capturar parámetros y almacenarlos en "data" según parámetros de entrada indicados
     try {
+
+      this.validateUser(data.identificationNumber)
       // Llamada a método para registro de datos basicos basicDataRegister
       const response = await this.enrollment.basicDataRegister(data)
+      console.log( response );
       if (!response) {
         throw new Error('Error el servidor no pudo procesar los datos basicos')
       }
       this.captureFace()
     } catch (error) {
+      if (error.code== "EP002" ) {
+        console.log('err', 'El usuario ya se encuentra registrado')
+      }
+      else if( error.code == "EP003" ){
+        console.log('err', 'Operacion no exitosa')
+      }
+      else{
+        console.log('err', 'Error el servidor no pudo procesar los datos básicos')
+      }
       //Manejo de mensajes de error
       console.log(error)
     }
@@ -103,6 +115,40 @@ class BasicRegistryComponent {
     const dataActivation = await responseActivation.json()
     console.log('dataActivation', dataActivation)
   }
+
+  async validateUser(identificationNumber) {
+    const response = await fetch(
+      'https://soyyo-snb.auth.us-east-1.amazoncognito.com/oauth2/token?client_id=4prar45fh00jpiu2mt0jcu6m99&client_secret=5uti50q4gr3g8bic4r75cidhvok8583e2cmvt9lk5vgn30gsp4q&grant_type=client_credentials',
+      {
+        method: 'POST', // or 'PUT'
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'x-api-key': 'PBxc0p3bsb4E2gqSzx29oDwaBgQPFM377ASwIBic',
+        },
+      },
+    )
+
+    const data = await response.json()
+    console.log('data', data)
+
+    const responseUserValidate = await fetch(
+      `https://api.soyyo.mobi/snb-user/user/v2.1/users/validate`,
+      {
+        method: 'POST', // or 'PUT'
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': 'PBxc0p3bsb4E2gqSzx29oDwaBgQPFM377ASwIBic',
+          Authorization: `Bearer ${data.access_token}`,
+        },
+        body: JSON.stringify({documentType: 'CC', identificationNumber: identificationNumber}),
+      },
+    )
+
+    const datavalidateUser = await responseUserValidate.json()
+    console.log('datavalidateUser', dataActivation)
+  }
 }
+
+
 
 export default BasicRegistryComponent
